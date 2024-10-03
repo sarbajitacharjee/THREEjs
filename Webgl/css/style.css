@@ -1,0 +1,7 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+#webgl-canvas {
+    border: 1px solid black;
+}

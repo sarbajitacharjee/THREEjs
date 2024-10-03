@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Typewriter Effect</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f0f0;
+}
+
+.typewriter p {
+  font-family: monospace;
+  font-size: 2rem;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 3px solid black; /* Cursor effect */
+  width: 0; /* Start hidden */
+  
+  /* Animation to reveal the text */
+  animation: typing 3.5s steps(40, end) 1 normal both, blink-caret 0.5s step-end infinite;
+}
+
+/* Typing effect */
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+/* Blinking cursor */
+@keyframes blink-caret {
+  from, to { border-color: transparent; }
+  50% { border-color: black; }
+}
+
+  </style>
+</head>
+<body>
+  <div class="typewriter">
+    <p>Hello, this is a typewriter effect!</p>
+  </div>
+</body>
+</html>
