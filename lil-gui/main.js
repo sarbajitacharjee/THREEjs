@@ -68,7 +68,8 @@ const boxGeometry = new THREE.BoxGeometry(5, 5, 3);
 
 // Create MeshStandardMaterial with metalness and roughness properties
 const boxMaterial = new THREE.MeshStandardMaterial({
-    map: texture,
+    // map: texture,
+    color:0x40E0D0,
     metalness: 0.7,
     roughness: 0.4,
 });
