@@ -51,7 +51,7 @@ scene.add(pointLightHelper);
 
 // Load texture
 const loader = new THREE.TextureLoader();
-const texture = loader.load('./solid.jpeg');
+const texture = loader.load('./fruit.jpg');
 
 // Create box geometry
 const boxGeometry = new THREE.BoxGeometry(5, 5, 3);
