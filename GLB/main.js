@@ -17,14 +17,14 @@ document.body.appendChild(renderer.domElement);
 
 // Load HDRI texture for lighting
 const rgbeLoader = new RGBELoader();
-rgbeLoader.load('./zwartkops_pit_2k.hdr', (texture) => {
+rgbeLoader.load('/zwartkops_pit_2k.hdr', (texture) => {
     texture.mapping = THREE.EquirectangularReflectionMapping;
     // scene.background = texture; // Set the scene background to the HDRI texture
     scene.environment = texture; // Set the scene environment to the HDRI texture
 
 
     const gltfLoader = new GLTFLoader();
-    gltfLoader.load('./alien.glb', (gltf) => {
+    gltfLoader.load('/alien.glb', (gltf) => {
       // gltf.scene.scale.set(1, 1, 1);
       gltf.scene.position.set(0, -2, 0);
         scene.add(gltf.scene);
