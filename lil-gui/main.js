@@ -52,7 +52,7 @@ scene.add(pointLightHelper);
 // Load texture
 const loader = new THREE.TextureLoader();
 // const texture = loader.load('/fruit.jpg');
-const texture = loader.load('/assets/fruit.jpg', 
+const texture = loader.load('/fruit.jpg', 
     (texture) => {
         console.log('Texture loaded successfully', texture);
     },
