@@ -52,7 +52,7 @@ scene.add(pointLightHelper);
 // Load texture
 const loader = new THREE.TextureLoader();
 // const texture = loader.load('/fruit.jpg');
-const texture = loader.load('./fruit.jpg', 
+const texture = loader.load('/fruit.jpg', 
     (texture) => {
         console.log('Texture loaded successfully', texture);
     },
@@ -68,7 +68,7 @@ const boxGeometry = new THREE.BoxGeometry(5, 5, 3);
 
 // Create MeshStandardMaterial with metalness and roughness properties
 const boxMaterial = new THREE.MeshStandardMaterial({
-    color: 'red',
+    map: texture,
     metalness: 0.7,
     roughness: 0.4,
 });
