@@ -1,91 +1,140 @@
-
-import React, { useEffect, useRef } from 'react';
+// Import necessary Three.js modules
 import * as THREE from 'three';
-import { GUI } from 'dat.gui';
-// import './App.css'; // Optional: Add your styling here
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { GUI } from 'lil-gui';
+import { DirectionalLightHelper, PointLightHelper } from 'three'; // Import PointLightHelper
+import { AxesHelper } from 'three';
 
-function App() {
-  const canvasRef = useRef(null);
+// Create scene
+const scene = new THREE.Scene();
 
-  useEffect(() => {
-    // Setup scene, camera, renderer
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.z = 10;
+// Create camera
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+camera.position.z = 10;
 
-    const renderer = new THREE.WebGLRenderer({ canvas: canvasRef.current, antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
+// Create renderer
+const canvas = document.getElementById('draw');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+renderer.setPixelRatio(window.devicePixelRatio);
+renderer.setSize(window.innerWidth, window.innerHeight);
 
-    // Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-    scene.add(ambientLight);
+// Add orbit controls
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.05;
 
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-    directionalLight.position.set(5, 10, 7.5);
-    scene.add(directionalLight);
+// Add lighting
+const ambientLight = new THREE.AmbientLight(0xffffff, 1); // Soft white ambient light
+scene.add(ambientLight);
 
-    // Load texture
-    const loader = new THREE.TextureLoader();
-    const texture = loader.load('./pic.jpg');
+const directionalLight = new THREE.DirectionalLight(0xffffff, 1); // Bright directional light
+directionalLight.position.set(5, 5, 5);
+scene.add(directionalLight);
 
-    // Box geometry and material
-    const boxGeometry = new THREE.BoxGeometry(5, 5, 3);
-    const boxMaterial = new THREE.MeshStandardMaterial({
-      map: texture,
-      metalness: 0.7,
-      roughness: 0.4,
-    });
+// Add helpers
+// Directional Light Helper
+const directionalLightHelper = new DirectionalLightHelper(directionalLight, 1); // Size is 1
+scene.add(directionalLightHelper);
 
-    const box = new THREE.Mesh(boxGeometry, boxMaterial);
-    scene.add(box);
+// Axes Helper
+const axesHelper = new THREE.AxesHelper(10); // Length of the axes
+scene.add(axesHelper);
 
-    // Animation controls
-    let boxRotationSpeed = { speed: 0.01 };
+// Point Light
+const pointLight = new THREE.PointLight(0xffffff, 1, 100); // Color, intensity, distance
+pointLight.position.set(-5, 5, 5); // Position the point light
+scene.add(pointLight);
 
-    // dat.GUI setup
-    const gui = new GUI();
-    const materialFolder = gui.addFolder('Material');
-    materialFolder.add(boxMaterial, 'metalness', 0, 1).name('Metalness');
-    materialFolder.add(boxMaterial, 'roughness', 0, 1).name('Roughness');
+// Point Light Helper
+const pointLightHelper = new PointLightHelper(pointLight, 1); // Size is 1
+scene.add(pointLightHelper);
 
-    const boxFolder = gui.addFolder('Box');
-    boxFolder.add(box.rotation, 'x', 0, Math.PI * 2).name('Rotate X');
-    boxFolder.add(box.rotation, 'y', 0, Math.PI * 2).name('Rotate Y');
-    boxFolder.add(box.scale, 'x', 0.5, 3).name('Scale X');
-    boxFolder.add(box.scale, 'y', 0.5, 3).name('Scale Y');
-    boxFolder.add(box.scale, 'z', 0.5, 3).name('Scale Z');
-    boxFolder.add(boxRotationSpeed, 'speed', 0, 0.1).name('Rotation Speed');
+// Load texture
+const loader = new THREE.TextureLoader();
+const texture = loader.load('./solid.jpeg');
 
-    materialFolder.open();
-    boxFolder.open();
+// Create box geometry
+const boxGeometry = new THREE.BoxGeometry(5, 5, 3);
 
-    // Animation loop
-    const animate = () => {
-      requestAnimationFrame(animate);
-      box.rotation.x += boxRotationSpeed.speed;
-      box.rotation.y += boxRotationSpeed.speed;
-      renderer.render(scene, camera);
-    };
-    animate();
+// Create MeshStandardMaterial with metalness and roughness properties
+const boxMaterial = new THREE.MeshStandardMaterial({
+    map: texture,
+    metalness: 0.7,
+    roughness: 0.4,
+});
 
-    // Handle window resize
-    const onWindowResize = () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    };
+// Create mesh
+const box = new THREE.Mesh(boxGeometry, boxMaterial);
+scene.add(box);
 
-    window.addEventListener('resize', onWindowResize);
+// GUI controls
+const gui = new GUI();
 
-    // Cleanup function
-    return () => {
-      window.removeEventListener('resize', onWindowResize);
-      gui.destroy(); // Destroy the GUI when component unmounts
-    };
-  }, []);
+// Material controls
+const materialFolder = gui.addFolder('Material');
+materialFolder.add(boxMaterial, 'metalness', 0, 1).name('Metalness');
+materialFolder.add(boxMaterial, 'roughness', 0, 1).name('Roughness');
 
-  return <canvas ref={canvasRef} />;
+// Box controls
+const boxFolder = gui.addFolder('Box');
+boxFolder.add(box.rotation, 'x', 0, Math.PI * 2).name('Rotate X');
+boxFolder.add(box.rotation, 'y', 0, Math.PI * 2).name('Rotate Y');
+boxFolder.add(box.scale, 'x', 0.5, 3).name('Scale X');
+boxFolder.add(box.scale, 'y', 0.5, 3).name('Scale Y');
+boxFolder.add(box.scale, 'z', 0.5, 3).name('Scale Z');
+
+let boxRotationSpeed = { speed: 0.01 };
+boxFolder.add(boxRotationSpeed, 'speed', 0, 0.1).name('Rotation Speed');
+
+// Light controls
+const lightFolder = gui.addFolder('Lights');
+
+// Ambient Light Controls
+const ambientFolder = lightFolder.addFolder('Ambient Light');
+ambientFolder.add(ambientLight, 'intensity', 0, 2).name('Intensity'); // Control intensity
+ambientFolder.open();
+
+// Directional Light Controls
+const directionalFolder = lightFolder.addFolder('Directional Light');
+directionalFolder.add(directionalLight.position, 'x', -10, 10).name('Position X');
+directionalFolder.add(directionalLight.position, 'y', -10, 10).name('Position Y');
+directionalFolder.add(directionalLight.position, 'z', -10, 10).name('Position Z');
+directionalFolder.add(directionalLight, 'intensity', 0, 2).name('Intensity'); // Control intensity
+directionalFolder.open();
+
+// Point Light Controls
+const pointFolder = lightFolder.addFolder('Point Light');
+pointFolder.add(pointLight.position, 'x', -10, 10).name('Position X');
+pointFolder.add(pointLight.position, 'y', -10, 10).name('Position Y');
+pointFolder.add(pointLight.position, 'z', -10, 10).name('Position Z');
+pointFolder.add(pointLight, 'intensity', 0, 2).name('Intensity'); // Control intensity
+pointFolder.open();
+
+// Open main lights folder
+lightFolder.open();
+
+materialFolder.open();
+boxFolder.open();
+
+// Animation loop
+function animate() {
+    requestAnimationFrame(animate);
+
+    // Rotate the box based on speed
+    box.rotation.x += boxRotationSpeed.speed;
+    box.rotation.y += boxRotationSpeed.speed;
+
+    // Update controls
+    controls.update();
+
+    renderer.render(scene, camera);
 }
 
-export default App;
+animate();
+
+// Handle window resize
+window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+});
