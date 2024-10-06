@@ -24,7 +24,7 @@ rgbeLoader.load('/zwartkops_pit_2k.hdr', (texture) => {
 
 
     const gltfLoader = new GLTFLoader();
-    gltfLoader.load('/skeleton.glb', (gltf) => {
+    gltfLoader.load('/alien.glb', (gltf) => {
       // gltf.scene.scale.set(1, 1, 1);
       gltf.scene.position.set(0, -1, 9.8);
         scene.add(gltf.scene);
