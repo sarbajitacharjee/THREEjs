@@ -45,7 +45,7 @@ rgbeLoader.load('/zwartkops_pit_2k.hdr', (texture) => {
     // Add Orbit Controls
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
-    controls.dampingFactor = 0.25;
+    controls.dampingFactor = 0.001;
     controls.enableZoom = true;
 
     // Animation loop
