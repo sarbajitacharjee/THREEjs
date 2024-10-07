@@ -26,7 +26,7 @@ rgbeLoader.load('/zwartkops_pit_2k.hdr', (texture) => {
     const gltfLoader = new GLTFLoader();
     gltfLoader.load('/alien.glb', (gltf) => {
       // gltf.scene.scale.set(1, 1, 1);
-      gltf.scene.position.set(0, -1, 9.8);
+      gltf.scene.position.set(0, -2, 0);
         scene.add(gltf.scene);
 
     });
@@ -45,7 +45,7 @@ rgbeLoader.load('/zwartkops_pit_2k.hdr', (texture) => {
     // Add Orbit Controls
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
-    controls.dampingFactor = 0.001;
+    controls.dampingFactor = 0.4;
     controls.enableZoom = true;
 
     // Animation loop
